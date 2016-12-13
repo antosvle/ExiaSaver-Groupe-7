@@ -15,6 +15,7 @@ char* timeLoader()
 	if(horloge.tm_isdst == -1)
 	{
 		printf("Error : cant read intern clock.");
+		exit(0);
 	}
 
 	char heures[3], minutes[3], secs[3];
@@ -64,7 +65,8 @@ char* timeLoader()
 
 
 	char *copie=NULL;
-	copie = malloc((strlen(Tclock)+1)*sizeof(char));
+	copie = malloc(sizeof(char));
 	strcpy(copie, Tclock);
 	return copie;
+	free(copie);
 }
