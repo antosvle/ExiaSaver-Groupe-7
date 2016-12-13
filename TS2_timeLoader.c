@@ -63,7 +63,6 @@ char* timeLoader()
 	strcat(Tclock, ":");
 	strcat(Tclock, SECS);
 
-
 	char *copie=NULL;
 	copie = malloc(sizeof(char));
 	strcpy(copie, Tclock);
