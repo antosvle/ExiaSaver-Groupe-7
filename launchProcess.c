@@ -35,6 +35,7 @@ void launchStatic(int argc, char *argv) //Execute le screenSaver statique en lui
 			strcat(cheminStatic, "/mario.pbm"); // on ajoute /mario.pbm à la fin de la chaine de caractere cheminStatic
             break;
     }
+
     if(argc == 3) // si il y a 3 arguments
     {
 	    if (strcmp(argv, "cesi.pbm") == 0 ) // si il y a 3 arguments et que la chaine est cesi.pbm alors
@@ -123,7 +124,7 @@ void launchInter(int argc, char *argv) //Execute le screenSaver interactif en lu
 }
 
 /*void readStats(); //Lit le fichier "history.txt" et l'affiche à l'écran.
-{
+{s
 	FILE* fichier = NULL; // initialisation du pointeur à NULL
 
 	fichier = fopen("history.txt", "r"); // ouvre le fichier txt
