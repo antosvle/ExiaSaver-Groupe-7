@@ -1,45 +1,82 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#include "fonctions.h"
+#include <sys/wait.h>
+#include <unistd.h>
+#include "functions.h"
 
 int main(int argc, char *argv[])
 {
-    if(argc > 3)
+	Coordinates consoleSize, imgSize;
+
+	captureConsoleSize(&consoleSize);
+
+	pid_t pid;
+
+	FILE* img = NULL;
+
+	img = fopen(argv[1] , "r");
+
+ 	if (img == NULL)
     {
-        printf("ERROR: Too many arguments\n");
-        exit(-1);
+        printf("ERROR: Impossible to open %s (inexisting file ?).", argv[1]);
+        exit(-1); 
     }
 
-    int option;
+    readImgFormat(img);
 
-    srand(time(NULL));
+	readImgSize(img, &imgSize);
 
-    if(argc == 1)
-    {
-        option = rand() % 3;
-    }
-    else
-    {
-        option = idArg1(argv[1]);
-    }
+	captureConsoleSize(&consoleSize, imgSize);
 
-    switch(option)
-    {
-        case 0:
-            launchStatic(argc, argv[2]); //launchStatic
-            break;
-        case 1:
-            launchDyna(argc, argv[2]); //launchDyna
-            break;
-        case 2:
-            launchInter(argc, argv[2]); //launchInter
-            break;
-        case 3:
-            //readStats();
-            break;
-        }
+    int imgPixel[imgSize.x][imgSize.y];
 
-        return 0;
-    }
+	readImgPixels(img, imgSize, imgPixel);
+
+    fclose(img);
+
+    Frame imgFrame;
+
+    int continuee;
+
+    continuee = 1;
+
+	pid = fork();
+
+	if(pid == -1)
+	{
+		printf("ERROR: Failure to create a new process.");
+		exit(-1);
+	}
+	else if(pid ==  0)
+	{
+		getch();
+
+		kill(0, SIGTERM);
+	}
+	else
+	{
+		while(continuee)
+		{
+			switch(captureConsoleSize(&consoleSize, imgSize))
+			{
+				case -1:
+					continuee = 0;
+					break;
+				case 1:
+					system("clear");
+					
+					centerImg(imgSize, consoleSize, &imgFrame);
+					
+					printImg(consoleSize, imgSize, imgFrame, imgPixel);
+
+					break;
+			}
+
+			fflush(stdout);
+			sleep(1);
+		}
+	}
+
+	return 0;
+}
