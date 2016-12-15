@@ -38,14 +38,14 @@ char* timeLoader() //La fonction renvoit un pointeur d'un tableau de caractere a
 	// On créé plusieurs chaines de caractere pour permettre les transformations.
 	char heures[3], minutes[3], secs[3];
 	char HEURES[3], MINUTES[3], SECS[3];
-	char zero[]="0";
+	char zeroH[2]="0", zeroM[2]="0", zeroS[2]="0";
 
 	// On doit donc ajouter un zero a la valeur du temps lorsque la valeur est inferieur a 10.*/
 	if(horloge.tm_hour < 10)
 	{
 		sprintf(heures, "%d", horloge.tm_hour);
 		//Ici on recupere l'heure et on la place dans la chaine heure.
-		sprintf(HEURES, "%s", strcat(zero, heures));
+		sprintf(HEURES, "%s", strcat(zeroH, heures));
 		/*On ajoute ensuite a la chaine de caractere zero notre chaine heure ce qui a pour consequence d'ajouter le 0 manquant.
 		Enfin, on place l'heure avec le format HH dans notre chaine final : HEURES */
 
@@ -61,7 +61,7 @@ char* timeLoader() //La fonction renvoit un pointeur d'un tableau de caractere a
 	if(horloge.tm_min < 10)
 	{
 		sprintf(minutes, "%d", horloge.tm_min);
-		sprintf(MINUTES, "%s", strcat(zero, minutes));
+		sprintf(MINUTES, "%s", strcat(zeroM, minutes));
 	}
 	else
 	{
@@ -72,7 +72,7 @@ char* timeLoader() //La fonction renvoit un pointeur d'un tableau de caractere a
 	if(horloge.tm_sec < 10)
 	{
 		sprintf(secs, "%d", horloge.tm_sec);
-		sprintf(SECS, "%s", strcat(zero, secs));
+		sprintf(SECS, "%s", strcat(zeroS, secs));
 	}
 	else
 	{
