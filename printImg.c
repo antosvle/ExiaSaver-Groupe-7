@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include "functions.h"
 
-void centerImg(Coordinates const imgSize, Coordinates const consoleSize, Frame *imgFrame)
+void frameImg(Coordinates const consoleSize, Coordinates const planePosition, Frame *imgFrame)
 {
-	imgFrame->xmin = (consoleSize.x - imgSize.x) / 2;
+	imgFrame->xmin = (planePosition.x - 3) % consoleSize.x;
 
-	imgFrame->ymin = (consoleSize.y - imgSize.y) / 2;
+	imgFrame->ymin = (planePosition.y - 3) % consoleSize.y;
 
-	imgFrame->xmax = (consoleSize.x - imgSize.x) / 2 + imgSize.x;
+	imgFrame->xmax = (planePosition.x + 3) % consoleSize.x;
 
-	imgFrame->ymax = (consoleSize.y - imgSize.y) / 2 + imgSize.y; //créer un cadre pour l'image.
+	imgFrame->ymax = (planePosition.y + 3) % consoleSize.y; //attribution des valeurs du carde de l'avion à imgFrame;
 }
 
-void printImg(Coordinates const consoleSize, Coordinates const imgSize, Frame const imgFrame, int imgPixel[imgSize.x][imgSize.y])
+void printImg(Coordinates const consoleSize, Frame const imgFrame, int imgPixel[6][6])
 {
 	Coordinates i, j;
 
 	j.x = 0;
 	j.y = 0;
 
-	for(i.y = 0; i.y < consoleSize.y; i.y++) //double for parcourant le terminal visible.
+	for(i.y = 0; i.y < consoleSize.y; i.y++) //le double for parcourt l'ensemble du terminal visible à l'aide de i.
 	{
 		if(i.y < imgFrame.ymin || i.y >= imgFrame.ymax)
 		{
@@ -33,11 +33,11 @@ void printImg(Coordinates const consoleSize, Coordinates const imgSize, Frame co
 		{
 			for(i.x = 0; i.x <= consoleSize.x; i.x++)
 			{
-				if(i.x < imgFrame.xmin || i.x >= imgFrame.xmax) //si dans le cadre, l'image est affichée et parcourue par j.
+				if(i.x < imgFrame.xmin || i.x >= imgFrame.xmax)
 				{
 					printf(" ");
 				}
-				else
+				else //si on se situe dans le carde de l'image, imprimer l'image et j parcourt l'image pbm.
 				{
 					if(imgPixel[j.x][j.y] == 1)
 					{
